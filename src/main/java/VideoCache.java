@@ -73,33 +73,6 @@ public class VideoCache
                 .collect(Collectors.toList());
     }
 
-    static class Requests{
-
-        Endpoint endpoint;
-        Video video;
-        int numOfRequests;
-
-        public Requests(Endpoint endpoint, Video video, int numOfRequests)
-        {
-            this.endpoint = endpoint;
-            this.video = video;
-            this.numOfRequests = numOfRequests;
-        }
-    }
-    static class Endpoint
-    {
-        int index;
-        Map<Integer, Integer> cacheToLatency;
-        int datacenterLatency;
-
-        public Endpoint(int index, Map<Integer, Integer> cacheToLatency, int datacenterLatency)
-        {
-            this.index = index;
-            this.cacheToLatency = cacheToLatency;
-            this.datacenterLatency = datacenterLatency;
-        }
-    }
-
     private List<Integer> lineToNums(String firstRow)
     {
         return Stream.of(firstRow.split(" "))
@@ -119,17 +92,7 @@ public class VideoCache
         return videos;
     }
 
-    static class Video
-    {
-        final int index;
-        final int size;
 
-        public Video(int index, int size)
-        {
-            this.index = index;
-            this.size = size;
-        }
-    }
 
     public static void main(String[] args) throws IOException
     {
