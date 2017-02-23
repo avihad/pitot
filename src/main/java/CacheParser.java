@@ -1,7 +1,7 @@
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -18,8 +18,8 @@ public class CacheParser
     int cacheNums;
     int cacheCapacity;
 
-    List<Video> videos;
-    List<Endpoint> endpoints;
+    Map<Integer, Video> videos;
+    Map<Integer, Endpoint> endpoints;
 
     public CacheParser(String fileName) throws IOException
     {
@@ -42,7 +42,8 @@ public class CacheParser
         int endPointRow = 2;
 
 
-        endpoints = new ArrayList<>();
+        endpoints = new HashMap<>();
+
         for (int i = 0; i< this.endPointsNum; i++)
         {
             List<Integer> endpointDesc = lineToNums(fileLines.get(endPointRow));
@@ -56,22 +57,29 @@ public class CacheParser
                     .map(s -> s.split(" "))
                     .collect(Collectors.toMap(s -> Integer.parseInt(s[0]),
                                               s -> Integer.parseInt(s[1])));
-            endpoints.add(new Endpoint(cacheToLatency, dbLatency));
+            endpoints.put(i,new Endpoint(i, cacheToLatency, dbLatency));
             endPointRow = latencyRowEnd + 1;
         }
 
         int requestRow = endPointRow;
+        List<String> requestsLines = fileLines.subList(endPointRow, fileLines.size());
+
 
 
     }
 
+    static class Requests{
+
+    }
     static class Endpoint
     {
+        int index;
         Map<Integer, Integer> cacheToLatency;
         int datacenterLatency;
 
-        public Endpoint(Map<Integer, Integer> cacheToLatency, int datacenterLatency)
+        public Endpoint(int index, Map<Integer, Integer> cacheToLatency, int datacenterLatency)
         {
+            this.index = index;
             this.cacheToLatency = cacheToLatency;
             this.datacenterLatency = datacenterLatency;
         }
@@ -84,13 +92,13 @@ public class CacheParser
                 .collect(Collectors.toList());
     }
 
-    private List<Video> parseVideos(String videosList)
+    private Map<Integer, Video> parseVideos(String videosList)
     {
-        List<Video> videos = new ArrayList<>();
+        Map<Integer, Video> videos = new HashMap<>();
         String[] sizes = videosList.split(" ");
         for (int i = 0; i < sizes.length; i++)
         {
-            videos.add(new Video(i, Integer.parseInt(sizes[i])));
+            videos.put(i, new Video(i, Integer.parseInt(sizes[i])));
         }
 
         return videos;
