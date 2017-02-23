@@ -44,7 +44,7 @@ public class CacheParser
 
         endpoints = new HashMap<>();
 
-        for (int i = 0; i< this.endPointsNum; i++)
+        for (int i = 0; i < this.endPointsNum; i++)
         {
             List<Integer> endpointDesc = lineToNums(fileLines.get(endPointRow));
 
@@ -58,7 +58,7 @@ public class CacheParser
                     .collect(Collectors.toMap(s -> Integer.parseInt(s[0]),
                                               s -> Integer.parseInt(s[1])));
             endpoints.put(i,new Endpoint(i, cacheToLatency, dbLatency));
-            endPointRow = latencyRowEnd + 1;
+            endPointRow = latencyRowEnd;
         }
 
         int requestRow = endPointRow;
