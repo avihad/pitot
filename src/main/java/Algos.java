@@ -2,7 +2,9 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by amenahem on 2/23/17.
@@ -14,21 +16,21 @@ public class Algos
         int cacheCapacity = videoCache.cacheCapacity;
 
         List<CacheOutput> outputs = new ArrayList<>();
+        Set<Integer> seenVideos = new HashSet<>();
         for (int i = 0; i < videoCache.cacheNums; i++)
         {
             int currentCapacity = cacheCapacity;
             List<Integer> currentCache = new ArrayList<>();
             for (Video video : videoCache.videos.values())
             {
-                if (video.size < currentCapacity){
+                if (video.size < currentCapacity && !seenVideos.contains(video.index)){
                     currentCache.add(video.index);
+                    seenVideos.add(video.index);
                     currentCapacity -= video.size;
                 }
             }
             outputs.add(new CacheOutput(i, currentCache));
-
         }
-
 
         return outputs;
     }
