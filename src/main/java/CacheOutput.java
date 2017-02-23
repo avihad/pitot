@@ -1,3 +1,4 @@
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -11,5 +12,12 @@ public class CacheOutput {
     {
         this.cache = cache;
         this.videos = videos;
+    }
+
+    public String toString(){
+        StringBuilder sb = new StringBuilder("");
+        this.videos.forEach(v-> sb.append(v).append(" "));
+        sb.deleteCharAt(sb.length() - 1);
+        return cache + " " + sb.toString();
     }
 }
