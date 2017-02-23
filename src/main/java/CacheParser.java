@@ -23,9 +23,8 @@ public class CacheParser
     {
         List<String> fileLines = Files.readAllLines(Paths.get(fileName));
 
-        List<Integer> nums = Stream.of(fileLines.get(0).split(" "))
-                .map(Integer::parseInt)
-                .collect(Collectors.toList());
+        String firstRow = fileLines.get(0);
+        List<Integer> nums = lineToNums(firstRow);
         System.out.println(nums);
 
         videoSize = nums.get(0);
@@ -38,7 +37,21 @@ public class CacheParser
 
         videos = parseVideos(videosList);
 
+        int endPointRow = 2;
 
+        List<Integer> endpointDesc = lineToNums(fileLines.get(2));
+        int dbLatency = endpointDesc.get(0);
+        Integer numOfCaches = endpointDesc.get(1);
+
+        fileLines.subList(2,fileLines.size());
+
+    }
+
+    private List<Integer> lineToNums(String firstRow)
+    {
+        return Stream.of(firstRow.split(" "))
+                .map(Integer::parseInt)
+                .collect(Collectors.toList());
     }
 
     private List<Video> parseVideos(String videosList)
