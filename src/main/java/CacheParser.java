@@ -3,6 +3,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -18,6 +19,7 @@ public class CacheParser
     int cacheCapacity;
 
     List<Video> videos;
+    List<Endpoint> endpoints;
 
     public CacheParser(String fileName) throws IOException
     {
@@ -39,12 +41,40 @@ public class CacheParser
 
         int endPointRow = 2;
 
-        List<Integer> endpointDesc = lineToNums(fileLines.get(2));
-        int dbLatency = endpointDesc.get(0);
-        Integer numOfCaches = endpointDesc.get(1);
 
-        fileLines.subList(2,fileLines.size());
+        endpoints = new ArrayList<>();
+        for (int i = 0; i< this.endPointsNum; i++)
+        {
+            List<Integer> endpointDesc = lineToNums(fileLines.get(endPointRow));
 
+            int dbLatency = endpointDesc.get(0);
+            int numOfCaches = endpointDesc.get(1);
+            int latencyRowStart = endPointRow + 1;
+            int latencyRowEnd = endPointRow + 1 + numOfCaches;
+            List<String> cacheLatency = fileLines.subList(latencyRowStart, latencyRowEnd);
+            Map<Integer, Integer> cacheToLatency = cacheLatency.stream()
+                    .map(s -> s.split(" "))
+                    .collect(Collectors.toMap(s -> Integer.parseInt(s[0]),
+                                              s -> Integer.parseInt(s[1])));
+            endpoints.add(new Endpoint(cacheToLatency, dbLatency));
+            endPointRow = latencyRowEnd + 1;
+        }
+
+        int requestRow = endPointRow;
+
+
+    }
+
+    static class Endpoint
+    {
+        Map<Integer, Integer> cacheToLatency;
+        int datacenterLatency;
+
+        public Endpoint(Map<Integer, Integer> cacheToLatency, int datacenterLatency)
+        {
+            this.cacheToLatency = cacheToLatency;
+            this.datacenterLatency = datacenterLatency;
+        }
     }
 
     private List<Integer> lineToNums(String firstRow)
@@ -66,7 +96,8 @@ public class CacheParser
         return videos;
     }
 
-    static class Video{
+    static class Video
+    {
         final int index;
         final int size;
 
