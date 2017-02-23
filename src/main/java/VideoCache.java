@@ -134,5 +134,21 @@ public class VideoCache
     public static void main(String[] args) throws IOException
     {
         VideoCache videoCache = new VideoCache("me_at_the_zoo.in");
+        System.out.println(videoCache);
+    }
+
+    @Override
+    public String toString()
+    {
+        return "VideoCache{" +
+                "\nvideoSize=" + videoSize +
+                "\n, endPointsNum=" + endPointsNum +
+                "\n, requestsNums=" + requestsNums +
+                "\n, cacheNums=" + cacheNums +
+                "\n, cacheCapacity=" + cacheCapacity +
+                "\n, videos=" + videos +
+                "\n, endpoints=" + endpoints +
+                "\n, requests=" + requests +
+                "\n}";
     }
 }
