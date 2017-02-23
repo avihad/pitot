@@ -10,7 +10,7 @@ import java.util.stream.Stream;
 /**
  * Created by amenahem on 2/23/17.
  */
-public class CacheParser
+public class VideoCache
 {
     int videoSize;
     int endPointsNum;
@@ -20,8 +20,9 @@ public class CacheParser
 
     Map<Integer, Video> videos;
     Map<Integer, Endpoint> endpoints;
+    List<Requests> requests;
 
-    public CacheParser(String fileName) throws IOException
+    public VideoCache(String fileName) throws IOException
     {
         List<String> fileLines = Files.readAllLines(Paths.get(fileName));
 
@@ -64,8 +65,12 @@ public class CacheParser
         int requestRow = endPointRow;
         List<String> requestsLines = fileLines.subList(endPointRow, fileLines.size());
 
-
-
+        requests = requestsLines.stream()
+                .map(this::lineToNums)
+                .map(n -> new Requests(endpoints.get(n.get(1)),
+                                       videos.get(n.get(0)),
+                                       n.get(2)))
+                .collect(Collectors.toList());
     }
 
     static class Requests{
@@ -128,6 +133,6 @@ public class CacheParser
 
     public static void main(String[] args) throws IOException
     {
-        CacheParser cacheParser = new CacheParser("me_at_the_zoo.in");
+        VideoCache videoCache = new VideoCache("me_at_the_zoo.in");
     }
 }
