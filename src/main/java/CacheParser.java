@@ -70,6 +70,16 @@ public class CacheParser
 
     static class Requests{
 
+        Endpoint endpoint;
+        Video video;
+        int numOfRequests;
+
+        public Requests(Endpoint endpoint, Video video, int numOfRequests)
+        {
+            this.endpoint = endpoint;
+            this.video = video;
+            this.numOfRequests = numOfRequests;
+        }
     }
     static class Endpoint
     {
