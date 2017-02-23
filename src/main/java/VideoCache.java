@@ -28,7 +28,6 @@ public class VideoCache
 
         String firstRow = fileLines.get(0);
         List<Integer> nums = lineToNums(firstRow);
-        System.out.println(nums);
 
         videoSize = nums.get(0);
         endPointsNum = nums.get(1);
@@ -62,7 +61,6 @@ public class VideoCache
             endPointRow = latencyRowEnd;
         }
 
-        int requestRow = endPointRow;
         List<String> requestsLines = fileLines.subList(endPointRow, fileLines.size());
 
         requests = requestsLines.stream()
@@ -92,12 +90,11 @@ public class VideoCache
         return videos;
     }
 
+    public void outputSolution(List<CacheOutput> cacheOutputs){
+        int size = cacheOutputs.size();
 
+        List<CacheOutput> rows = cacheOutputs.subList(1, cacheOutputs.size());
 
-    public static void main(String[] args) throws IOException
-    {
-        VideoCache videoCache = new VideoCache("me_at_the_zoo.in");
-        System.out.println(videoCache);
     }
 
     @Override
