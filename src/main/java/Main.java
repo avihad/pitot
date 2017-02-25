@@ -3,6 +3,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.CompletionService;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorCompletionService;
@@ -36,11 +37,19 @@ public class Main
 
     private static void calculate(String inputFileName, String outputFileName) throws IOException
     {
-        Algo algo = new GlobalMaximumOverLatency();
-
+        System.out.println("Staring: " + inputFileName);
+        long timeTook = System.currentTimeMillis();
+        Algo algo = new GlobalMaximumOverVideoLatency();
         VideoCache videoCache = new VideoCache(inputFileName);
         List<CacheOutput> output = algo.calculate(videoCache);
         outputToFile(output, outputFileName);
+        long timeSaved = output.stream().map(c -> c.videos)
+                .flatMap(Set::stream)
+                .map(v -> v.requests)
+                .flatMap(List::stream)
+                .mapToLong(r -> r.timeSaved)
+                .sum();
+        System.out.println("Finish: " + inputFileName + " Saved: " + timeSaved + " took: " + (System.currentTimeMillis() - timeTook) / 1000.0);
     }
 
     public static void outputToFile(List<CacheOutput> outputs, String fileName) throws IOException

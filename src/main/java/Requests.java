@@ -31,7 +31,7 @@ public class Requests
         if (this.video.equals(video))
         {
             int datacenterLatency = endpoint.datacenterLatency;
-            timeSaved = Math.max(timeSaved, numOfRequests * endpoint.cacheToLatency.getOrDefault(cache, 0) - datacenterLatency);
+            timeSaved = Math.max(timeSaved, numOfRequests * (datacenterLatency - endpoint.cacheToLatency.getOrDefault(cache, 0)));
         }
     }
 }

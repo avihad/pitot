@@ -7,7 +7,7 @@ import java.util.Set;
 public class CacheOutput {
     public int cache;
     public int capacity;
-    public Set<Integer> videos;
+    public Set<Video> videos;
 
     public CacheOutput(int cache, int capacity)
     {
@@ -18,16 +18,16 @@ public class CacheOutput {
 
     public void addVideo(Video video)
     {
-        this.videos.add(video.index);
+        this.videos.add(video);
         this.capacity -= video.size;
     }
 
     public boolean isContained(Video video)
     {
-        return videos.contains(video.index);
+        return videos.contains(video);
     }
 
-    public CacheOutput(int cache, Set<Integer> videos)
+    public CacheOutput(int cache, Set<Video> videos)
     {
         this.cache = cache;
         this.videos = videos;
@@ -35,7 +35,7 @@ public class CacheOutput {
 
     public String toString(){
         StringBuilder sb = new StringBuilder("");
-        this.videos.forEach(v-> sb.append(v).append(" "));
+        this.videos.forEach(v-> sb.append(v.index).append(" "));
         sb.deleteCharAt(sb.length() - 1);
         return cache + " " + sb.toString();
     }
