@@ -5,9 +5,10 @@ import java.util.Map;
  */
 public class Endpoint
 {
-    public int index;
-    public Map<Integer, Integer> cacheToLatency;
-    public int datacenterLatency;
+    public final int index;
+    public final Map<Integer, Integer> cacheToLatency;
+    public final int datacenterLatency;
+
 
     public Endpoint(int index, Map<Integer, Integer> cacheToLatency, int datacenterLatency)
     {

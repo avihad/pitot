@@ -57,7 +57,7 @@ public class VideoCache
                     .map(s -> s.split(" "))
                     .collect(Collectors.toMap(s -> Integer.parseInt(s[0]),
                                               s -> Integer.parseInt(s[1])));
-            endpoints.put(i,new Endpoint(i, cacheToLatency, dbLatency));
+            endpoints.put(i, new Endpoint(i, cacheToLatency, dbLatency));
             endPointRow = latencyRowEnd;
         }
 
@@ -65,9 +65,9 @@ public class VideoCache
 
         requests = requestsLines.stream()
                 .map(this::lineToNums)
-                .map(n -> new Requests(endpoints.get(n.get(1)),
-                                       videos.get(n.get(0)),
-                                       n.get(2)))
+                .map(n -> Requests.create(endpoints.get(n.get(1)),
+                                          videos.get(n.get(0)),
+                                          n.get(2)))
                 .collect(Collectors.toList());
     }
 
@@ -90,7 +90,8 @@ public class VideoCache
         return videos;
     }
 
-    public void outputSolution(List<CacheOutput> cacheOutputs){
+    public void outputSolution(List<CacheOutput> cacheOutputs)
+    {
         int size = cacheOutputs.size();
 
         List<CacheOutput> rows = cacheOutputs.subList(1, cacheOutputs.size());
