@@ -28,7 +28,6 @@ public class GreedyVideoCacheSelector implements Algo
 
         videoQueue = new PriorityQueue<>(
                 Comparator.comparing((VideoCacheLatency v) -> v.latencyToSize, Comparator.reverseOrder())
-                        .thenComparing(v -> v.cache)
         );
     }
 
