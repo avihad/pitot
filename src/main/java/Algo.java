@@ -6,5 +6,5 @@ import java.util.List;
 public interface Algo
 {
 
-    List<CacheOutput> calculate(VideoCache videoCache);
+    List<CacheOutput> calculate();
 }

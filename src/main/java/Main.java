@@ -18,15 +18,15 @@ public class Main
 {
     public static void main(String[] args) throws IOException, ExecutionException, InterruptedException
     {
-        ExecutorService executorService = Executors.newWorkStealingPool();
+        ExecutorService executorService = Executors.newWorkStealingPool(1);
         CompletionService<Void> completionService = new ExecutorCompletionService<>(executorService);
 
         completionService.submit(() -> {calculate("trending_today.in", "output_trending.out"); return null;});
-        completionService.submit(() -> {calculate("videos_worth_spreading.in", "output_videos_spreding.out"); return null;});
+        /*completionService.submit(() -> {calculate("videos_worth_spreading.in", "output_videos_spreding.out"); return null;});
         completionService.submit(() -> {calculate("me_at_the_zoo.in", "output_zoo.out"); return null;});
         completionService.submit(() -> {calculate("kittens.in", "output_kittens.out"); return null;});
-
-        for (int i = 0; i < 4; i++)
+*/
+        for (int i = 0; i < 1; i++)
         {
             Future<Void> take = completionService.take();
             take.get();
@@ -39,9 +39,11 @@ public class Main
     {
         System.out.println("Staring: " + inputFileName);
         long timeTook = System.currentTimeMillis();
-        Algo algo = new GlobalMaximumOverVideoLatency();
         VideoCache videoCache = new VideoCache(inputFileName);
-        List<CacheOutput> output = algo.calculate(videoCache);
+
+        Algo algo = new GreedyVideoCacheSelector(videoCache);
+
+        List<CacheOutput> output = algo.calculate();
         outputToFile(output, outputFileName);
         long timeSaved = output.stream().map(c -> c.videos)
                 .flatMap(Set::stream)

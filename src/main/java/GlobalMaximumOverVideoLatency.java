@@ -11,7 +11,14 @@ import java.util.stream.Collectors;
 public class GlobalMaximumOverVideoLatency implements Algo
 {
 
-    public List<CacheOutput> calculate(VideoCache videoCache)
+    private VideoCache videoCache;
+
+    public GlobalMaximumOverVideoLatency(VideoCache videoCache)
+    {
+        this.videoCache = videoCache;
+    }
+
+    public List<CacheOutput> calculate()
     {
 
         List<Requests> requests = videoCache.requests;
@@ -36,8 +43,8 @@ public class GlobalMaximumOverVideoLatency implements Algo
         Map<Video, Map<Integer, Integer>> videoToCacheTimes = new HashMap<>();
         for (Requests request : requests)
         {
-            int numOfRequests = request.numOfRequests;
             Video video = request.video;
+            int numOfRequests = request.numOfRequests;
             int timeSaved = request.timeSaved;
             Map<Integer, Integer> cacheToImprovement = videoToCacheTimes.computeIfAbsent(video, v -> new HashMap<>());
             Endpoint endpoint = request.endpoint;
@@ -84,7 +91,7 @@ public class GlobalMaximumOverVideoLatency implements Algo
                         cout.capacity > video.size)
                 {
                     cout.addVideo(video);
-                    video.requests.forEach(r -> r.updateRequestTimeSaving(video, cache));
+                    video.updateRequests(cache);
                     isChanged = true;
                     break;
                 }
