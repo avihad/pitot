@@ -24,7 +24,7 @@ public class Video
 
     public void updateRequests(Integer cache)
     {
-        this.requests.forEach(r -> r.updateRequestTimeSaving(this, cache));
+        this.requests.forEach(r -> r.updateRequestTimeSaving(cache));
     }
 
     public long overallSaving(){

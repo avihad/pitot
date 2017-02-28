@@ -4,12 +4,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-import java.util.concurrent.CompletionService;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorCompletionService;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
+import java.util.concurrent.*;
 
 /**
  * Created by amenahem on 2/25/17.
@@ -21,11 +16,11 @@ public class Main
         ExecutorService executorService = Executors.newWorkStealingPool(1);
         CompletionService<Void> completionService = new ExecutorCompletionService<>(executorService);
 
-        completionService.submit(() -> {calculate("trending_today.in", "output_trending.out"); return null;});
-        /*completionService.submit(() -> {calculate("videos_worth_spreading.in", "output_videos_spreding.out"); return null;});
-        completionService.submit(() -> {calculate("me_at_the_zoo.in", "output_zoo.out"); return null;});
-        completionService.submit(() -> {calculate("kittens.in", "output_kittens.out"); return null;});
-*/
+        completionService.submit(() -> {calculate("trending_today.in", "trending_today.out"); return null;});
+//        completionService.submit(() -> {calculate("videos_worth_spreading.in", "videos_worth_spreading.out"); return null;});
+//        completionService.submit(() -> {calculate("me_at_the_zoo.in", "me_at_the_zoo.out"); return null;});
+//        completionService.submit(() -> {calculate("kittens.in", "output_kittens.out"); return null;});
+
         for (int i = 0; i < 1; i++)
         {
             Future<Void> take = completionService.take();
